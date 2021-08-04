@@ -23,8 +23,8 @@
             <td>{{$book->price}}</td>
             <td>{{$book->description}}</td>
             <td>
-                <a href="{{route('book.destroy',$book->id)}}" class="btn btn-danger">delete</a>
-{{--                <a href="{{route('')}}"></a>--}}
+                <a href="{{route('book.destroy',$book->id)}}" class="btn btn-danger">delete</a>/
+                <a href="{{route('book.edit',$book->id)}}" class="btn btn-warning">edit</a>
             </td>
         </tr>
         @empty

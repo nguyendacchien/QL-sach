@@ -20,5 +20,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/',[\App\Http\Controllers\BookController::class,'index'])->name('book.list');
     Route::get('/create',[\App\Http\Controllers\BookController::class,'create'])->name('book.create');
     Route::post('/create',[\App\Http\Controllers\BookController::class,'store'])->name('book.store');
+    Route::get('/update/{id}',[\App\Http\Controllers\BookController::class,'edit'])->name('book.edit');
+    Route::post('/update/{id}',[\App\Http\Controllers\BookController::class,'update'])->name('book.update');
     Route::get('/delete/{id}',[\App\Http\Controllers\BookController::class,'destroy'])->name('book.destroy');
 });

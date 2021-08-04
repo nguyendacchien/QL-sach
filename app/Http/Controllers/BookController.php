@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -41,7 +40,11 @@ class BookController extends Controller
      */
     public function store(Book $book,BookRequest $request)
     {
-        $path = $request->file('image')->store('images','public');
+        if (!$request->hasFile('image')){
+            $path = 'images/TQre7t4anpTxVhi2rYqYocxGLCOpD8NqU7zEIxkg.jpg';
+        }else{
+            $path = $request->file('image')->store('images','public');
+        }
         $book->name = $request->name;
         $book->category_id = $request->category;
         $book->price = $request->price;
@@ -68,8 +71,11 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(book $book)
+    public function edit($id)
     {
+        $book = Book::findOrFail($id);
+        $categories = Category::all();
+        return view('admin.book.update',compact('categories','book'));
 
     }
 
@@ -80,9 +86,22 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, book $book)
+    public function update(BookRequest $request, book $book, $id)
     {
-        //
+//        dd($request->image);
+        if (!$request->hasFile('image')){
+            $book = Book::findOrFail($id);
+            $path = $book->image;
+        }else{
+            $path = $request->file('image')->store('images','public');
+        }
+        $book->name = $request->name;
+        $book->price = $request->price;
+        $book->description = $request->description;
+        $book->category_id = $request->category;
+        $book->image = $path;
+        $book->save();
+        return redirect()->route('book.list');
     }
 
     /**
